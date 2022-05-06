@@ -2,5 +2,14 @@
   "name": "vue-ui-lib",
   "version": "1.0.0",
   "main": "index.js",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "prettier": "yarn prettier --write ."
+  },
+  "devDependencies": {
+    "prettier": "^2.6.2"
+  },
+  "files": [
+    "dist/*"
+  ]
 }
