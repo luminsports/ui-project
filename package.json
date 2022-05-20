@@ -4,14 +4,18 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "dev": "vite",
+    "build": "vite build && vue-tsc --declaration --emitDeclarationOnly",
+    "preview": "vite preview",
     "prettier": "prettier --write .",
     "storybook": "start-storybook -p 6006",
     "test:unit": "vitest --environment jsdom",
     "build-storybook": "build-storybook",
-    "typecheck": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false"
+    "typecheck": "vue-tsc --noEmit --composite false"
   },
   "devDependencies": {
     "@babel/core": "^7.17.10",
+    "@rollup/plugin-typescript": "^8.3.2",
     "@storybook/addon-actions": "^6.4.22",
     "@storybook/addon-essentials": "^6.4.22",
     "@storybook/addon-links": "^6.4.22",
