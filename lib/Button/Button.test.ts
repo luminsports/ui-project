@@ -9,8 +9,10 @@ test('mount button', function () {
   const wrapper = mount(Button, {
     props: {
       label: 'Hello World',
+      primary: true,
     },
   })
 
   expect(wrapper.text()).toContain('Hello World')
+  expect(wrapper.text()).toContain('primary')
 })
