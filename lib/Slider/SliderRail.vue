@@ -7,7 +7,7 @@
 </script>
 
 <template>
-  <div>
+  <div style='position: relative'>
     <slot />
   </div>
 </template>
