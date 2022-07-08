@@ -1,8 +1,8 @@
 <script lang="ts" setup>
   import { ref, inject } from 'vue'
+  import { useSlider } from './utils'
 
-  const thumbs = inject('thumbs')
-  console.dir(thumbs)
+  const { min, max, registerThumb } = useSlider('SliderTrack')
 
   const value = ref()
   const pos = ref()
