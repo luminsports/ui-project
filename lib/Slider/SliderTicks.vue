@@ -1,10 +1,8 @@
 <script lang="ts" setup>
-  import { computed, inject } from 'vue'
-  import { linearInterpolation } from './utils'
+  import { computed } from 'vue'
+  import { linearInterpolation, useSlider } from './utils'
 
-  const min = inject<number>('min')
-  const max = inject<number>('max')
-  const step = inject<number>('step')
+  const { min, max } = useSlider('SliderTicks')
 
   const props = defineProps({
     at: {
@@ -20,12 +18,12 @@
         value,
         index,
         interpolatedValue,
-        pos: { position: 'absolute', top: 0, left: `${interpolatedValue}%`}
+        style: { position: 'absolute', top: 0, left: `${interpolatedValue}%`}
       }
     })
   })
 </script>
 
 <template>
-  <slot v-for="{ value, index, pos, interpolatedValue } in ticks" v-bind="{ value, index, pos, interpolatedValue }" />
+  <slot v-for="{ value, index, style, interpolatedValue } in ticks" v-bind="{ value, index, style, interpolatedValue }" />
 </template>

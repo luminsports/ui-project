@@ -1,5 +1,10 @@
-<script lang="ts" setup>
-  import { provide, reactive } from 'vue'
+<script lang='ts' setup>
+  import { provide, reactive, ref, isRef, Ref } from 'vue'
+  import {
+    ThumbMap,
+    SliderContext,
+    SliderSymbol
+  } from './utils'
 
   const props = defineProps({
     step: { type: Number, default: 1 },
@@ -7,17 +12,19 @@
     max: { type: Number, default: 100 },
   })
 
-  const thumbs = reactive({})
+  const thumbs = reactive<ThumbMap>({})
 
-  provide('step', props.step)
-  provide('min', props.min)
-  provide('max', props.max)
-  provide('thumbs', thumbs)
-  provide('registerThumb', (thumb, value) => {
-    thumbs[thumb] = value
+  provide<SliderContext>(SliderSymbol, {
+    step: props.step,
+    min: props.min,
+    max: props.max,
+    thumbs,
+    registerThumb: (thumb, value) => {
+      thumbs[thumb as number] = isRef(value) ? value as Ref<number> : ref(value as number)
 
-    return () => {
-      delete thumbs[thumb]
+      return () => {
+        delete thumbs[thumb]
+      }
     }
   })
 </script>

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-  import { ref, inject, getCurrentInstance, onMounted, onUnmounted, computed } from 'vue'
-  import { linearInterpolation } from './utils'
+  import { ref, getCurrentInstance, onMounted, onUnmounted, computed } from 'vue'
+  import { linearInterpolation, useSlider } from './utils'
 
   const props = defineProps({
     preventOverlap: {
@@ -16,16 +16,13 @@
     },
   })
 
-
-  const registerThumb = inject('registerThumb')
-  const min = inject<number>('min')
-  const max = inject<number>('max')
+  const { min, max, registerThumb } = useSlider('SliderThumb')
 
   let unregistered = null
 
   const hovered = ref(false)
   const pressed = ref(false)
-  const position = computed(() => {
+  const style = computed(() => {
     const interpolatedValue = linearInterpolation(props.modelValue, min, max, 0, 100)
 
     return { position: 'absolute', top: 0, left: `${interpolatedValue}%`}
@@ -43,5 +40,5 @@
 </script>
 
 <template>
-  <slot :hovered="hovered" :pressed="pressed" :pos="position" />
+  <slot :hovered="hovered" :pressed="pressed" :style="style" :value="props.modelValue" />
 </template>
