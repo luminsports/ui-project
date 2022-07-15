@@ -1,4 +1,4 @@
-import { inject, Ref } from 'vue'
+import { getCurrentInstance, inject, onMounted, onUnmounted, Ref } from 'vue'
 import { UnwrapNestedRefs } from '@vue/reactivity'
 
 export function linearInterpolation (value: number, x1 = 0, y1 = 100, x2 = 0, y2 = 100): number {
@@ -8,18 +8,18 @@ export function linearInterpolation (value: number, x1 = 0, y1 = 100, x2 = 0, y2
   return (((value - x1) * outputScaleDifference / inputScaleDifference) + x2)
 }
 
-export const SliderSymbol = Symbol()
-export type UnregisterThumb = (componentUid: number) => void
-export type RegisterThumb = (componentUid: number, value: number | Ref<number>) => UnregisterThumb
-export interface ThumbMap {
-  [key: number]: Ref<number>
+export const SliderSymbol = Symbol('SliderSymbol')
+export type RegisterThumb = (componentUid: number, value: Ref<number>) => void
+export type Thumb = {
+  uid: number,
+  value: Ref<number>
 }
 
 export type SliderContext = {
   min: number,
   max: number,
   step: number,
-  thumbs: UnwrapNestedRefs<ThumbMap>,
+  thumbs: Ref<Thumb[]>,
   registerThumb: RegisterThumb
 }
 

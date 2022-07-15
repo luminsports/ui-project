@@ -1,7 +1,7 @@
 <script lang='ts' setup>
-  import { provide, reactive, ref, isRef, Ref } from 'vue'
+  import { provide, reactive, ref, isRef, Ref, onMounted, getCurrentInstance, onUnmounted } from 'vue'
   import {
-    ThumbMap,
+    Thumb,
     SliderContext,
     SliderSymbol
   } from './utils'
@@ -12,19 +12,26 @@
     max: { type: Number, default: 100 },
   })
 
-  const thumbs = reactive<ThumbMap>({})
+  const thumbs = ref<Thumb[]>([])
 
   provide<SliderContext>(SliderSymbol, {
     step: props.step,
     min: props.min,
     max: props.max,
     thumbs,
-    registerThumb: (thumb, value) => {
-      thumbs[thumb as number] = isRef(value) ? value as Ref<number> : ref(value as number)
+    registerThumb: (uid: number, value: Ref<number>) => {
+      onMounted(() => {
+        thumbs.value = [...thumbs.value, {
+          uid,
+          value: value.value
+        }]
+      })
 
-      return () => {
-        delete thumbs[thumb]
-      }
+      onUnmounted(() => {
+        return () => {
+          thumbs.value = thumbs.value.filter(t => t.uid !== uid)
+        }
+      })
     }
   })
 </script>

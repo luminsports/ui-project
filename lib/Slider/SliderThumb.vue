@@ -18,7 +18,7 @@
 
   const { min, max, registerThumb } = useSlider('SliderThumb')
 
-  let unregistered = null
+  registerThumb(getCurrentInstance().uid, ref(props.modelValue))
 
   const hovered = ref(false)
   const pressed = ref(false)
@@ -26,16 +26,6 @@
     const interpolatedValue = linearInterpolation(props.modelValue, min, max, 0, 100)
 
     return { position: 'absolute', top: 0, left: `${interpolatedValue}%`}
-  })
-
-  onMounted(() => {
-    unregistered = registerThumb(getCurrentInstance().uid, props.modelValue)
-  })
-
-  onUnmounted(() => {
-    if (unregistered) {
-      unregistered()
-    }
   })
 </script>
 
