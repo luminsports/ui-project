@@ -16,22 +16,37 @@
     },
   })
 
-  const { min, max, registerThumb } = useSlider('SliderThumb')
+  const emit = defineEmits(['update:modelValue'])
+
+  const { slider, min, max, registerThumb } = useSlider('SliderThumb')
 
   registerThumb(getCurrentInstance().uid, ref(props.modelValue))
 
-  const element: Ref<Element> = ref(null)
+  const element: Ref<HTMLElement> = ref(null)
+  const isDragging: Ref<Boolean> = ref(false)
 
   const onMouseDown = () => {
-
+    isDragging.value = true
   }
 
-  const onMouseMove = () => {
+  const onMouseMove = (ev: PointerEvent) => {
+    if (isDragging.value) {
+      const thumbOffset = element.value.offsetWidth / 2
 
+      const value = linearInterpolation(
+        ev.x - thumbOffset,
+        slider.value.offsetLeft + thumbOffset,
+        slider.value.offsetWidth + slider.value.offsetLeft - thumbOffset,
+        min,
+        max,
+        true
+      )
+      emit('update:modelValue', value)
+    }
   }
 
   const onMouseUp = () => {
-
+    isDragging.value = false
   }
 
   onMounted(() => {
@@ -56,5 +71,7 @@
 </script>
 
 <template>
-  <slot ref='element' :hovered='hovered' :pressed='pressed' :style='style' :value='props.modelValue' />
+  <div ref="element" :style="style">
+    <slot :hovered="hovered" :pressed="pressed" :value="props.modelValue" />
+  </div>
 </template>
