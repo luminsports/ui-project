@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-  import { onMounted, onUnmounted, provide, ref, Ref } from 'vue'
+  import { onMounted, onUnmounted, provide, ref, Ref, triggerRef, watch } from 'vue'
   import { SliderContext, SliderSymbol, Thumb } from './utils'
 
   const props = defineProps({
@@ -40,9 +40,13 @@
           ...thumbs.value,
           {
             uid,
-            value: value.value,
+            modelValue: value.value,
           },
         ]
+
+        watch(value, (newValue) => {
+          thumbs.value = thumbs.value.map(t => t.uid === uid ? t : { uid, modelValue: newValue })
+        })
       })
 
       onUnmounted(() => {

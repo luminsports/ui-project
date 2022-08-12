@@ -4,12 +4,12 @@
 
   const { min, max, thumbs } = useSlider('SliderTrack')
 
-  const tracks = computed(() => {
-    const sortedThumbs = thumbs.value.sort((a, z) => a.value.value - z.value.value)
+  const tracks = computed<Array<{start: number, end: number, index: number, style: Record<string, string|number>}>>(() => {
+    const sortedThumbs = thumbs.value.sort((a, z) => a.modelValue - z.modelValue)
 
     const tracks = sortedThumbs.map((thumb: Thumb, index: number) => {
-      const start = linearInterpolation(sortedThumbs[index - 1]?.value ?? min, min, max, 0, 100)
-      const end = linearInterpolation(thumb.value, min, max, 0, 100)
+      const start = linearInterpolation(sortedThumbs?.[index - 1]?.modelValue ?? min, min, max, 0, 100)
+      const end = linearInterpolation(thumb.modelValue, min, max, 0, 100)
 
       return {
         start,

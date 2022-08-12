@@ -20,7 +20,7 @@ export const SliderSymbol = Symbol('SliderSymbol')
 export type RegisterThumb = (componentUid: number, value: Ref<number>) => void
 export type Thumb = {
   uid: number
-  value: Ref<number>
+  modelValue: number
 }
 
 export type SliderContext = {
@@ -28,7 +28,7 @@ export type SliderContext = {
   max: number
   step: number
   slider: Ref<HTMLElement>
-  thumbs: Ref<UnwrapRef<Thumb>[]>
+  thumbs: Ref<Thumb[]>
   registerThumb: RegisterThumb
   sliderWidth: Ref<number>
   sliderOffset: Ref<number>

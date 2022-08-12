@@ -20,7 +20,9 @@
 
   const { min, max, registerThumb, sliderOffset, sliderWidth } = useSlider('SliderThumb')
 
-  registerThumb(getCurrentInstance().uid, ref(props.modelValue))
+  const sliderValue = computed(() => props.modelValue)
+
+  registerThumb(getCurrentInstance().uid, sliderValue)
 
   const element: Ref<HTMLElement> = ref(null)
   const isDragging: Ref<Boolean> = ref(false)
