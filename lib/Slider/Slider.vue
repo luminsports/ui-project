@@ -1,15 +1,6 @@
 <script lang="ts" setup>
-  import {
-    provide,
-    reactive,
-    ref,
-    isRef,
-    Ref,
-    onMounted,
-    getCurrentInstance,
-    onUnmounted,
-  } from 'vue'
-  import { Thumb, SliderContext, SliderSymbol } from './utils'
+  import { onMounted, onUnmounted, provide, ref, Ref } from 'vue'
+  import { SliderContext, SliderSymbol, Thumb } from './utils'
 
   const props = defineProps({
     step: { type: Number, default: 1 },

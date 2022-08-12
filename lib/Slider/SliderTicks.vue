@@ -18,12 +18,13 @@
         value,
         index,
         interpolatedValue,
-        style: { position: 'absolute', top: 0, left: `${interpolatedValue}%`}
+        style: { position: 'absolute', top: 0, left: `${interpolatedValue}%` },
       }
     })
   })
 </script>
 
 <template>
-  <slot v-for="{ value, index, style, interpolatedValue } in ticks" v-bind="{ value, index, style, interpolatedValue }" />
+  <slot v-for="{ value, index, style, interpolatedValue } in ticks"
+        v-bind="{ value, index, style, interpolatedValue }" />
 </template>

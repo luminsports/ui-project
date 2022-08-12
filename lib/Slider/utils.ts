@@ -1,5 +1,4 @@
-import { getCurrentInstance, inject, onMounted, onUnmounted, Ref } from 'vue'
-import { UnwrapNestedRefs } from '@vue/reactivity'
+import { inject, Ref, UnwrapRef } from 'vue'
 
 export function linearInterpolation(
   value: number,
@@ -7,7 +6,7 @@ export function linearInterpolation(
   y1 = 100,
   x2 = 0,
   y2 = 100,
-  clamp: boolean = false
+  clamp: boolean = false,
 ): number {
   const outputScaleDifference = y2 - x2
   const inputScaleDifference = y1 - x1
@@ -29,7 +28,7 @@ export type SliderContext = {
   max: number
   step: number
   slider: Ref<HTMLElement>
-  thumbs: Ref<Thumb[]>
+  thumbs: Ref<UnwrapRef<Thumb>[]>
   registerThumb: RegisterThumb
 }
 

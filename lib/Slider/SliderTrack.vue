@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-  import { ref, inject, computed } from 'vue'
+  import { computed } from 'vue'
   import { linearInterpolation, Thumb, useSlider } from './utils'
 
   const { min, max, thumbs } = useSlider('SliderTrack')
@@ -15,7 +15,7 @@
         start,
         end,
         index,
-        style: { position: 'absolute', top: 0, left: `${start}%`, width: `${end - start}%` }
+        style: { position: 'absolute', top: 0, left: `${start}%`, width: `${end - start}%` },
       }
     })
 
@@ -26,7 +26,7 @@
       start: finalStartPoint,
       end: 100,
       index: lastTrack ? lastTrack.index + 1 : 0,
-      style: { position: 'absolute', top: 0, left: `${finalStartPoint}%`, width: `${100 - finalStartPoint}%` }
+      style: { position: 'absolute', top: 0, left: `${finalStartPoint}%`, width: `${100 - finalStartPoint}%` },
     })
 
     return tracks
@@ -34,5 +34,6 @@
 </script>
 
 <template>
-  <slot v-for="{ start, end, index, style } in tracks" v-bind="{ start, end, index, style, isFirst: index === 0, isLast: index === tracks.length - 1 }" />
+  <slot v-for="{ start, end, index, style } in tracks"
+        v-bind="{ start, end, index, style, isFirst: index === 0, isLast: index === tracks.length - 1 }" />
 </template>
