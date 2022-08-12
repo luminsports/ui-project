@@ -6,7 +6,7 @@ export function linearInterpolation(
   y1 = 100,
   x2 = 0,
   y2 = 100,
-  clamp: boolean = false,
+  clamp: boolean = false
 ): number {
   const outputScaleDifference = y2 - x2
   const inputScaleDifference = y1 - x1
@@ -30,6 +30,8 @@ export type SliderContext = {
   slider: Ref<HTMLElement>
   thumbs: Ref<UnwrapRef<Thumb>[]>
   registerThumb: RegisterThumb
+  sliderWidth: Ref<number>
+  sliderOffset: Ref<number>
 }
 
 export function useSlider(component: string): SliderContext {

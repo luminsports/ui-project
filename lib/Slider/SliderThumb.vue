@@ -18,7 +18,7 @@
 
   const emit = defineEmits(['update:modelValue'])
 
-  const { slider, min, max, registerThumb } = useSlider('SliderThumb')
+  const { min, max, registerThumb, sliderOffset, sliderWidth } = useSlider('SliderThumb')
 
   registerThumb(getCurrentInstance().uid, ref(props.modelValue))
 
@@ -26,9 +26,9 @@
   const isDragging: Ref<Boolean> = ref(false)
   const isHovered: Ref<Boolean> = ref(false)
   const thumbOffset = computed(() => element.value?.offsetWidth / 2)
-  const sliderWidth = computed(() => slider.value?.offsetWidth - thumbOffset.value)
-  const leftX = computed(() => slider.value?.offsetLeft + thumbOffset.value)
-  const rightX = computed(() => slider.value?.offsetLeft + sliderWidth.value - thumbOffset.value)
+  const innerSliderWidth = computed(() => sliderWidth.value - thumbOffset.value)
+  const leftX = computed(() => sliderOffset.value + thumbOffset.value)
+  const rightX = computed(() => sliderOffset.value + innerSliderWidth.value - thumbOffset.value)
 
   const onMouseDown = () => {
     isDragging.value = true
@@ -44,15 +44,7 @@
 
   const onMouseMove = (ev: PointerEvent) => {
     if (isDragging.value) {
-
-      const value = linearInterpolation(
-        ev.x,
-        leftX.value,
-        rightX.value,
-        min,
-        max,
-        true,
-      )
+      const value = linearInterpolation(ev.x, leftX.value, rightX.value, min, max, true)
 
       emit('update:modelValue', value)
     }
@@ -79,9 +71,19 @@
   })
 
   const style = computed(() => {
-    const interpolatedValue = linearInterpolation(props.modelValue, min, max, thumbOffset.value, sliderWidth.value)
+    const interpolatedValue = linearInterpolation(
+      props.modelValue,
+      min,
+      max,
+      thumbOffset.value,
+      innerSliderWidth.value
+    )
 
-    return { position: 'absolute', top: 0, transform: `translateX(${interpolatedValue}px) translateX(-50%)` }
+    return {
+      position: 'absolute',
+      top: 0,
+      transform: `translateX(${interpolatedValue}px) translateX(-50%)`,
+    }
   })
 </script>
 
