@@ -1,4 +1,4 @@
-import { inject, Ref, UnwrapRef } from 'vue'
+import { inject, Ref } from 'vue'
 
 export function linearInterpolation(
   value: number,
@@ -17,9 +17,10 @@ export function linearInterpolation(
 }
 
 export const SliderSymbol = Symbol('SliderSymbol')
-export type RegisterThumb = (componentUid: number, value: Ref<number>) => void
+export type RegisterThumb = (componentUid: number, value: Ref<number>, element: Ref<HTMLElement|null>) => void
 export type Thumb = {
   uid: number
+  element: HTMLElement|null
   modelValue: number
 }
 

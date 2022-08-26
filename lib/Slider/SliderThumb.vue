@@ -22,15 +22,15 @@
 
   const sliderValue = computed(() => props.modelValue)
 
-  registerThumb(getCurrentInstance().uid, sliderValue)
-
-  const element: Ref<HTMLElement> = ref(null)
+  const element: Ref<HTMLElement|null> = ref(null)
   const isDragging: Ref<Boolean> = ref(false)
   const isHovered: Ref<Boolean> = ref(false)
   const thumbOffset = computed(() => element.value?.offsetWidth / 2)
   const innerSliderWidth = computed(() => sliderWidth.value - thumbOffset.value)
   const leftX = computed(() => sliderOffset.value + thumbOffset.value)
   const rightX = computed(() => sliderOffset.value + innerSliderWidth.value - thumbOffset.value)
+
+  registerThumb(getCurrentInstance().uid, sliderValue, element)
 
   const onMouseDown = () => {
     isDragging.value = true

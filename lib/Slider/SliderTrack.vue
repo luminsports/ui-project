@@ -2,20 +2,36 @@
   import { computed } from 'vue'
   import { linearInterpolation, Thumb, useSlider } from './utils'
 
-  const { min, max, thumbs } = useSlider('SliderTrack')
+  const { min, max, thumbs, sliderWidth } = useSlider('SliderTrack')
 
   const tracks = computed<Array<{start: number, end: number, index: number, style: Record<string, string|number>}>>(() => {
     const sortedThumbs = thumbs.value.sort((a, z) => a.modelValue - z.modelValue)
 
     const tracks = sortedThumbs.map((thumb: Thumb, index: number) => {
-      const start = linearInterpolation(sortedThumbs?.[index - 1]?.modelValue ?? min, min, max, 0, 100)
-      const end = linearInterpolation(thumb.modelValue, min, max, 0, 100)
+      const thumbOffset = computed(() => thumb.element.offsetWidth / 2)
+      const innerSliderWidth = computed(() => sliderWidth.value - thumbOffset.value)
+
+      const start = linearInterpolation(
+        sortedThumbs?.[index - 1]?.modelValue ?? min,
+        min,
+        max,
+        index === 0 ? 0 : thumbOffset.value,
+        innerSliderWidth.value
+      )
+
+      const end = linearInterpolation(
+        thumb.modelValue,
+        min,
+        max,
+        thumbOffset.value,
+        innerSliderWidth.value
+      )
 
       return {
         start,
         end,
         index,
-        style: { position: 'absolute', top: 0, left: `${start}%`, width: `${end - start}%` },
+        style: { position: 'absolute', top: 0, transform: `translateX(${start}px)`, width: `${end - start}px` },
       }
     })
 
@@ -26,7 +42,7 @@
       start: finalStartPoint,
       end: 100,
       index: lastTrack ? lastTrack.index + 1 : 0,
-      style: { position: 'absolute', top: 0, left: `${finalStartPoint}%`, width: `${100 - finalStartPoint}%` },
+      style: { position: 'absolute', top: 0, transform: `translateX(${finalStartPoint}px)`, width: `${sliderWidth.value - finalStartPoint}px` },
     })
 
     return tracks
