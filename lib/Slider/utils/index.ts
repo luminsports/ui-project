@@ -17,10 +17,15 @@ export function linearInterpolation(
 }
 
 export const SliderSymbol = Symbol('SliderSymbol')
-export type RegisterThumb = (componentUid: number, value: Ref<number>, element: Ref<HTMLElement|null>) => void
+
+export type RegisterThumb = (
+  componentUid: number,
+  value: Ref<number>,
+  element: Ref<HTMLElement | null>
+) => void
 export type Thumb = {
   uid: number
-  element: HTMLElement|null
+  element: HTMLElement | null
   modelValue: number
 }
 
@@ -36,7 +41,7 @@ export type SliderContext = {
 }
 
 export function useSlider(component: string): SliderContext {
-  const context = inject<SliderContext>(SliderSymbol)
+  const context = inject<SliderContext>(SliderSymbol, null)
 
   if (context === null) {
     let err = new Error(`<${component} /> is missing a parent <Slider /> component.`)

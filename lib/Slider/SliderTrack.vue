@@ -4,7 +4,9 @@
 
   const { min, max, thumbs, sliderWidth } = useSlider('SliderTrack')
 
-  const tracks = computed<Array<{start: number, end: number, index: number, style: Record<string, string|number>}>>(() => {
+  const tracks = computed<
+    Array<{ start: number; end: number; index: number; style: Record<string, string | number> }>
+  >(() => {
     const sortedThumbs = thumbs.value.sort((a, z) => a.modelValue - z.modelValue)
 
     const tracks = sortedThumbs.map((thumb: Thumb, index: number) => {
@@ -31,18 +33,28 @@
         start,
         end,
         index,
-        style: { position: 'absolute', top: 0, transform: `translateX(${start}px)`, width: `${end - start}px` },
+        style: {
+          position: 'absolute',
+          top: 0,
+          transform: `translateX(${start}px)`,
+          width: `${end - start}px`,
+        },
       }
     })
 
-    const lastTrack = tracks[tracks.length - 1]
+    const lastTrack = tracks.length ? tracks[tracks.length - 1] : null
     const finalStartPoint = lastTrack?.end ?? 0
 
     tracks.push({
       start: finalStartPoint,
       end: 100,
       index: lastTrack ? lastTrack.index + 1 : 0,
-      style: { position: 'absolute', top: 0, transform: `translateX(${finalStartPoint}px)`, width: `${sliderWidth.value - finalStartPoint}px` },
+      style: {
+        position: 'absolute',
+        top: 0,
+        transform: `translateX(${finalStartPoint}px)`,
+        width: `${sliderWidth.value - finalStartPoint}px`,
+      },
     })
 
     return tracks
@@ -50,6 +62,14 @@
 </script>
 
 <template>
-  <slot v-for="{ start, end, index, style } in tracks"
-        v-bind="{ start, end, index, style, isFirst: index === 0, isLast: index === tracks.length - 1 }" />
+  <slot
+    v-for="{ start, end, index, style } in tracks"
+    v-bind="{
+      start,
+      end,
+      index,
+      style,
+      isFirst: index === 0,
+      isLast: index === tracks.length - 1,
+    }" />
 </template>
