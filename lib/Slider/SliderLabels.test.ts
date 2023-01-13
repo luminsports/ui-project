@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import { expect, it, describe, beforeAll } from 'vitest'
+import { expect, it, describe } from 'vitest'
 import SliderLabels from './SliderLabels.vue'
 import { defineComponent } from 'vue'
 import Slider from './Slider.vue'
