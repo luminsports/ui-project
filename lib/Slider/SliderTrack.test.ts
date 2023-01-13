@@ -13,4 +13,6 @@ describe('SliderTrack:', () => {
       })
     ).toThrowError('<SliderTrack /> is missing a parent <Slider /> component.')
   })
+
+  // TODO: it renders slider track
 })

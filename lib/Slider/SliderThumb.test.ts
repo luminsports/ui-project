@@ -15,4 +15,6 @@ describe('SliderThumb:', () => {
       })
     ).toThrowError('<SliderThumb /> is missing a parent <Slider /> component.')
   })
+
+  // TODO: it renders thumbs
 })

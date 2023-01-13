@@ -8,8 +8,7 @@ export default defineConfig({
   plugins: [vue()],
 
   resolve: {
-    alias: {
-    },
+    alias: {},
   },
 
   build: {
@@ -31,9 +30,13 @@ export default defineConfig({
           declaration: true,
           declarationDir: path.resolve('dist'),
           exclude: path.resolve('node_modules/**'),
-          allowSyntheticDefaultImports: true
-        })
-      ]
-    }
+          allowSyntheticDefaultImports: true,
+        }),
+      ],
+    },
+  },
+
+  test: {
+    setupFiles: ['./test/setupMocks.ts'],
   },
 })
