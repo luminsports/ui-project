@@ -4,12 +4,17 @@ import SliderRail from './SliderRail.vue'
 
 /** @vitest-environment jsdom */
 describe('SliderRail:', () => {
-  it('should throw an error if not used inside of a Slider component', function () {
+  it('should render a div', function () {
     expect(SliderRail).toBeTruthy()
 
     const sliderRail = mount(SliderRail, { props: {} })
 
     expect(sliderRail.element).toBeInstanceOf(HTMLDivElement)
+  })
+  
+  it('should have the correct styles', function() {
+    const sliderRail = mount(SliderRail, { props: {} })
+
     expect(getComputedStyle(sliderRail.element).position).toBe('relative')
   })
 })

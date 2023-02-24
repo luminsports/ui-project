@@ -37,6 +37,7 @@ export default defineConfig({
   },
 
   test: {
+    globals: true,
     setupFiles: ['./test/setupMocks.ts'],
   },
 })
