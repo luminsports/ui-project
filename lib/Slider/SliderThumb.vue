@@ -2,7 +2,7 @@
 import { computed, getCurrentInstance, onMounted, onUnmounted, ref, Ref } from 'vue'
 import { linearInterpolation, useSlider } from './utils'
 
-const props = defineProps({
+const props = defineProps({      
   preventOverlap: {
     type: Number,
   },
