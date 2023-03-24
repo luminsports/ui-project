@@ -33,7 +33,7 @@ export default defineConfig({
     editLinkText: '',
     lastUpdated: false,
     nav: [],
-    sidebar: ['/slider'],
+    sidebar: ['/slider', '/snackbar'],
     sidebarDepth: 0,
   },
 
