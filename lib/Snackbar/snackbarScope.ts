@@ -12,9 +12,10 @@ export interface SnackInstance {
   slot: Slot
   attrs: Record<string, unknown>
   hide?: () => void
+  timer: NodeJS.Timeout
 }
 
-export class SnackbarRegistry {
+export class SnackbarScope {
   shared: boolean
   snackbars: Ref<SnackInstance[]> = ref([])
 
@@ -31,7 +32,7 @@ export class SnackbarRegistry {
   remove(snackbar: SnackInstance): void {
     const index = this.snackbars.value.indexOf(snackbar)
     if (index > -1) {
-      this.snackbars.value = this.snackbars.value.splice(index, 1)
+      this.snackbars.value.splice(index, 1)
     }
   }
 

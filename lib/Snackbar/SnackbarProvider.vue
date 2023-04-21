@@ -1,35 +1,26 @@
 // Copyright (c) 2023 Lumin Sports Technology - All Rights Reserved
 // Unauthorized copying of this file, via any medium is strictly prohibited
 // Proprietary and confidential.
-
-<template>
-    <slot></slot>
-    
-    <template v-for="snackbar in visibleSnackbars">
-        <div v-bind="snackbar.attrs">
-            {{ snackbar.slot ? snackbar.slot({ content: snackbar.content }) : snackbar.content }}
-        </div>
-    </template>
-</template>
-
-
-
 <script lang="ts">
-import { defineComponent, provide, computed, type ComputedRef } from 'vue';
-import { SnackbarRegistry, type SnackbarInstance } from './snackbarRegistry'
+import { defineComponent, provide, computed, type ComputedRef, h, Fragment } from 'vue';
+import { SnackbarScope, type SnackInstance } from './snackbarScope'
 
 export default defineComponent({
     name: 'SnackbarProvider',
-    setup(props) {
-        const registry = new SnackbarRegistry(true)
-        provide('snackbar', registry)
-        
-        const visibleSnackbars: ComputedRef<SnackbarInstance[]> = computed(() => {
-            return registry.snackbars.value
-        })
+    setup(props, { slots }) {
+        const scope = new SnackbarScope(true)
+        provide('snackbar', scope)
 
-        return {
-            visibleSnackbars,
+        return () => {
+            return h(Fragment, [
+                slots.default(), 
+                ...scope.snackbars.value.map(snackbar => { 
+                    return h('div', snackbar.slot ? snackbar.attrs : {
+                        ...snackbar.attrs,
+                        textContent: snackbar.content
+                    }, snackbar.slot ? snackbar.slot?.({ content: snackbar.content }) : undefined)
+                })
+            ])
         }
     }
 })

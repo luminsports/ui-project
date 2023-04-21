@@ -4,16 +4,25 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, inject, h, Fragment } from 'vue';
-import { type SnackInstance, SnackbarRegistry } from './snackbarRegistry';
+import { type SnackInstance, SnackbarScope } from './snackbarScope';
 
 export default defineComponent({
     name: 'Snackbar',
     // TODO:
-    // timeout prop
-    // singleton prop
     // emit events
+    inherritAttrs: false,
+    props: {
+        duration: {
+            type: Number,
+            default: 5000
+        },
+        singleton: {
+            type: Boolean,
+            default: false
+        }
+    },
     setup(props, { slots, expose, attrs }) {
-        const provider: SnackbarRegistry | null = inject('snackbar') ?? new SnackbarRegistry
+        const scope: SnackbarScope | null = inject('snackbar',  new SnackbarScope)
 
         const groupId = ref()
 
@@ -21,42 +30,54 @@ export default defineComponent({
             groupId.value = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
         })
 
-        const hide = () => provider.removeAll(groupId.value)
+        const hide = () => scope.removeAll(groupId.value)
 
         const show = (newContent?: string) => {
+            // TODO: consider moving this into scope, testing
+            if (props.singleton && scope.snackbars.value.length > 0) {
+                const snackInstance = scope.snackbars.value[0]
+
+                clearTimeout(snackInstance.timer)
+                snackInstance.timer = setTimeout(() => {
+                    scope.remove(snackInstance)
+                }, props.duration)
+
+                return snackInstance
+            }
+
             const snackInstance: SnackInstance = {
                 groupId: groupId.value,
                 content: newContent,
                 attrs: attrs,
                 slot: slots.default,
+                timer: setTimeout(() => {
+                    scope.remove(snackInstance)
+                }, props.duration)
             }
 
             snackInstance.hide = () => {
-                provider.remove(snackInstance)
-            }
+                scope.remove(snackInstance)
 
-            return provider.add(snackInstance)
+                clearTimeout(snackInstance.timer)
+            }
+        
+
+            return scope.add(snackInstance)
         }
 
         expose({ show, hide })
 
-        if (provider.shared) {
+        if (scope.shared) {
             return () => null
         }
 
         return () => {
-            // TODO: 
-            // do rendering for non-shared provider
-            return h(Fragment, {
-                children: provider.snackbars.value.map(snackbar => {
-                    return h('div', {
-                        ...snackbar.attrs,
-                        child: h('div', {
-                            textContent: snackbar.slot ? undefined : snackbar.content
-                        }, snackbar.slot?.({ content: snackbar.content }))
-                    });
-                })
-            })
+            return h(Fragment, scope.snackbars.value.map(snackbar => {
+                return h('div', snackbar.slot ? snackbar.attrs : {
+                    ...snackbar.attrs,
+                    textContent: snackbar.content
+                }, snackbar.slot ? snackbar.slot?.({ content: snackbar.content }) : undefined)
+            }))
         }
     }
 })
