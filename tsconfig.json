@@ -6,17 +6,25 @@
     "declaration": true,
     "rootDir": "lib",
     "outDir": "./dist",
-
     // copied from https://github.com/vuejs/tsconfig/blob/main/tsconfig.json
-    "target": "es2015",
+    "target": "es2020",
     "jsx": "preserve",
-
     // Recommended
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     // // See <https://github.com/vuejs/vue-cli/pull/5688>
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "types": [
+      "vite/client"
+    ]
   },
-  "include": ["lib/**/*", "lib/**/*.vue"],
-  "exclude": ["node_modules", "lib/**/*.test.ts", "lib/**/*.stories.js"]
+  "include": [
+    "lib/**/*",
+    "lib/**/*.vue"
+  ],
+  "exclude": [
+    "node_modules",
+    "lib/**/*.test.ts",
+    "lib/**/*.stories.js"
+  ]
 }
