@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { onMounted, onUnmounted, provide, ref, Ref, triggerRef, watch } from 'vue'
-import { SliderContext, SliderSymbol, Thumb } from './utils'
+import { onMounted, onUnmounted, provide, ref, type Ref, watch } from 'vue'
+import { type SliderContext, SliderSymbol, type Thumb } from './utils'
 
 const props = defineProps({
   step: { type: Number, default: 1 },

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import { linearInterpolation, Thumb, useSlider } from './utils'
+  import { linearInterpolation, type Thumb, useSlider } from './utils'
 
   const { min, max, thumbs, sliderWidth } = useSlider('SliderTrack')
 

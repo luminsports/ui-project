@@ -6,10 +6,17 @@
 import { defineComponent, onMounted, ref, inject, h, Fragment } from 'vue';
 import { type SnackInstance, SnackbarScope } from './snackbarScope';
 
+type SnackbarEventContext = {
+    snackbar?: SnackInstance,
+}
+
+type HidingSnackbarEventContext = SnackbarEventContext & {
+    dismissed?: boolean
+}
+
 export default defineComponent({
     name: 'Snackbar',
-    // TODO:
-    // emit events
+
     inherritAttrs: false,
     props: {
         duration: {
@@ -21,8 +28,14 @@ export default defineComponent({
             default: false
         }
     },
-    setup(props, { slots, expose, attrs }) {
-        const scope: SnackbarScope | null = inject('snackbar',  new SnackbarScope)
+    emits: {
+        showing: () => true,
+        shown: (context: SnackbarEventContext) => !!context,
+        hiding: (context: HidingSnackbarEventContext) => !!context,
+        hidden: (context: HidingSnackbarEventContext) => !!context,
+    },
+    setup(props, { emit, slots, expose, attrs }) {
+        const scope: SnackbarScope | null = inject('snackbar', new SnackbarScope)
 
         const groupId = ref()
 
@@ -30,9 +43,18 @@ export default defineComponent({
             groupId.value = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
         })
 
-        const hide = () => scope.removeAll(groupId.value)
+        const hide = () => {
+            // TODO: should we loop over each snackbar?
+            emit('hiding', {})
+
+            scope.removeAll(groupId.value)
+
+            emit('hidden', {})
+        }
 
         const show = (newContent?: string) => {
+            emit('showing')
+
             // TODO: consider moving this into scope, testing
             if (props.singleton && scope.snackbars.value.length > 0) {
                 const snackInstance = scope.snackbars.value[0]
@@ -51,18 +73,40 @@ export default defineComponent({
                 attrs: attrs,
                 slot: slots.default,
                 timer: setTimeout(() => {
+                    emit('hiding', {
+                        snackbar: snackInstance,
+                        dismissed: false,
+                    })
+
                     scope.remove(snackInstance)
+
+                    emit('hidden', {
+                        snackbar: snackInstance,
+                        dismissed: false,
+                    })
                 }, props.duration)
             }
 
             snackInstance.hide = () => {
+                emit('hiding', {
+                    snackbar: snackInstance,
+                    dismissed: true,
+                })
+
                 scope.remove(snackInstance)
 
                 clearTimeout(snackInstance.timer)
-            }
-        
 
-            return scope.add(snackInstance)
+                emit('hidden', {
+                    snackbar: snackInstance,
+                    dismissed: true,
+                })
+            }
+
+            scope.add(snackInstance)
+            emit('shown', {
+                snackbar: snackInstance
+            })
         }
 
         expose({ show, hide })
@@ -82,46 +126,3 @@ export default defineComponent({
     }
 })
 </script>
-
-<!-- <template>
-<form>
-    <snackbar-provider>
-        <snackbar ref="failedRef">Failed</snackbar>
-        <snackbar ref="successRef">Success!</snackbar>
-
-        <snackbar
-            ref="snackRef"
-            :duration="0"
-            position="top-left"
-            :dismissable=""
-            singleton
-            @show=""
-            @shown=""
-            @hide=""
-            @hidden="">
-                Submitted successfully
-            </snackbar>
-    </snackbar-provider>
-</form>
-</template>
-
-<script>
-const snackRef = ref()
-
-const snackInstance = snackRef.value?.show('test')
-snackInstance.hide()
-
-snackRef.value?.hide()
-
-return { snackRef }
-</script> -->
-
-
-<!-- <page>
-    <form>
-        <snackbar>
-     </form>
-     <widget>
-        <snackbar>
-     </widget>
-</page> -->

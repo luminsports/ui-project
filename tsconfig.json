@@ -2,12 +2,13 @@
   "compilerOptions": {
     "baseUrl": ".",
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "declaration": true,
     "rootDir": "lib",
     "outDir": "./dist",
+    "verbatimModuleSyntax": true,
     // copied from https://github.com/vuejs/tsconfig/blob/main/tsconfig.json
-    "target": "es2020",
+    "target": "esnext",
     "jsx": "preserve",
     // Recommended
     "esModuleInterop": true,

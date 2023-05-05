@@ -1,4 +1,4 @@
-import { inject, Ref } from 'vue'
+import { inject, type Ref } from 'vue'
 
 export function linearInterpolation(
   value: number,
@@ -23,6 +23,7 @@ export type RegisterThumb = (
   value: Ref<number>,
   element: Ref<HTMLElement | null>
 ) => void
+
 export type Thumb = {
   uid: number
   element: HTMLElement | null

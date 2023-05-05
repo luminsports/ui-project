@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, getCurrentInstance, onMounted, onUnmounted, ref, Ref } from 'vue'
+import { computed, getCurrentInstance, onMounted, onUnmounted, ref, type Ref } from 'vue'
 import { linearInterpolation, useSlider } from './utils'
 
 const props = defineProps({      

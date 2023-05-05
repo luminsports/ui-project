@@ -12,7 +12,7 @@ export interface SnackInstance {
   slot: Slot
   attrs: Record<string, unknown>
   hide?: () => void
-  timer: NodeJS.Timeout
+  timer: number
 }
 
 export class SnackbarScope {

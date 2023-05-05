@@ -18,22 +18,22 @@ export default defineConfig({
       fileName: format => `index.${format}.js`,
     },
 
-    // rollupOptions: {
-    //   external: ['vue'],
-    //   output: {
-    //     globals: { vue: 'vue' },
-    //   },
-    //   plugins: [
-    //     // typescript({
-    //     //   target: 'es2020',
-    //     //   rootDir: path.resolve('lib'),
-    //     //   declaration: true,
-    //     //   declarationDir: path.resolve('dist'),
-    //     //   exclude: path.resolve('node_modules/**'),
-    //     //   allowSyntheticDefaultImports: true,
-    //     // }),
-    //   ],
-    // },
+    rollupOptions: {
+      external: ['vue'],
+      output: {
+        globals: { vue: 'vue' },
+      },
+      plugins: [
+        typescript({
+          target: 'es2020',
+          rootDir: path.resolve('lib'),
+          declaration: true,
+          declarationDir: path.resolve('dist'),
+          exclude: path.resolve('node_modules/**'),
+          allowSyntheticDefaultImports: true,
+        }),
+      ],
+    },
   },
 
   test: {
