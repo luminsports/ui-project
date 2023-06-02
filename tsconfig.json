@@ -17,7 +17,15 @@
     "skipLibCheck": true,
     "types": [
       "vite/client"
-    ]
+    ],
+    "paths": {
+      "@test/*": [
+        "test/*"
+      ],
+      "@/*": [
+        "lib/*"
+      ]
+    }
   },
   "include": [
     "lib/**/*",

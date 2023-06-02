@@ -8,7 +8,10 @@ export default defineConfig({
   plugins: [vue()],
 
   resolve: {
-    alias: {},
+    alias: {
+      '@test': path.resolve(__dirname, './test'),
+      '@': path.resolve(__dirname, './lib'),
+    },
   },
 
   build: {
@@ -38,6 +41,7 @@ export default defineConfig({
 
   test: {
     globals: true,
-    setupFiles: ['./test/setupMocks.ts'],
+    environment: 'happy-dom',
+    setupFiles: path.resolve(__dirname, './test/setupMocks.ts'),
   },
 })
