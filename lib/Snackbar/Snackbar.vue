@@ -64,6 +64,9 @@ export default defineComponent({
                     scope.remove(snackInstance)
                 }, props.duration)
 
+                // todo: figure out a way to trigger re-render
+                // snackInstance.content = newContent
+
                 return snackInstance
             }
 
@@ -116,12 +119,12 @@ export default defineComponent({
         }
 
         return () => {
-            return h(Fragment, scope.snackbars.value.map(snackbar => {
+            return scope.snackbars.value.length > 0 ? h(Fragment, scope.snackbars.value.map(snackbar => {
                 return h('div', snackbar.slot ? snackbar.attrs : {
                     ...snackbar.attrs,
                     textContent: snackbar.content
                 }, snackbar.slot ? snackbar.slot?.({ content: snackbar.content }) : undefined)
-            }))
+            })) : null
         }
     }
 })
