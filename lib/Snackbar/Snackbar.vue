@@ -35,7 +35,7 @@ export default defineComponent({
         hidden: (context: HidingSnackbarEventContext) => !!context,
     },
     setup(props, { emit, slots, expose, attrs }) {
-        const scope: SnackbarScope | null = inject('snackbar', new SnackbarScope)
+        const scope: SnackbarScope | null = inject('snackbar', new SnackbarScope, true)
 
         const groupId = ref()
 
